@@ -1,0 +1,21 @@
+import { boolean, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { createTable } from '../utils/createTable';
+import { defaultColumns } from '../utils/defaultColumns';
+import { contractStatusEnum } from './enums';
+import { contractTemplate } from './contract-template.schema';
+import { foreignKeyColumn } from '../utils/idColumn';
+
+export const contract = createTable('contract', {
+  ...defaultColumns(),
+  title: varchar('title', { length: 255 }).notNull(),
+  templateId: foreignKeyColumn('template_id')
+    .references(() => contractTemplate.id)
+    .notNull(),
+  status: contractStatusEnum('status').default('draft'),
+  startDate: timestamp('start_date'),
+  endDate: timestamp('end_date'),
+  isSigned: boolean('is_signed').default(false),
+});
+
+export type SelectContractData = typeof contract.$inferSelect;
+export type InsertContractData = typeof contract.$inferInsert;
