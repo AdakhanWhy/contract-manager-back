@@ -4,7 +4,7 @@ import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DEFAULT_DB_CONNECTION } from 'src/common/constans';
 import { ContractEntity } from 'src/services/contract/entities/contract.entity';
 import { ContractMapper } from './mapper/contract.mapper';
-import { eq } from 'drizzle-orm';
+import { asc, eq } from 'drizzle-orm';
 import { CreateContractDto } from 'src/services/contract/dto/create-contract.dto';
 import { UpdateContractDto } from 'src/services/contract/dto/update-contract.dto';
 
@@ -16,7 +16,10 @@ export class ContractRepository {
   ) {}
 
   async findAll(): Promise<ContractEntity[]> {
-    const data = await this.db.select().from(schema.contract);
+    const data = await this.db
+      .select()
+      .from(schema.contract)
+      .orderBy(asc(schema.contract.createdAt));
 
     return data.map((item) => ContractMapper.toEntity(item));
   }
