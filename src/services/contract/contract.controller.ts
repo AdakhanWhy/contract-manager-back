@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ContractService } from './contract.service';
 import { ContractEntity } from './entities/contract.entity';
@@ -24,8 +25,12 @@ export class ContractController {
   }
 
   @Get()
-  async getAllContracts(): Promise<ContractEntity[]> {
-    return await this.contractService.findAll();
+  async getAllContracts(
+    @Query('name') name?: string,
+  ): Promise<ContractEntity[]> {
+    return await this.contractService.findAll({
+      name,
+    });
   }
 
   @Get(':id')

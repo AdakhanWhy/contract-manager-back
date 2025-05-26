@@ -3,13 +3,14 @@ import { ContractRepository } from 'src/db/repository/contract.repository';
 import { ContractEntity } from './entities/contract.entity';
 import { CreateContractDto } from './dto/create-contract.dto';
 import { UpdateContractDto } from './dto/update-contract.dto';
+import { ContractFilterDto } from './dto/contract-filter.dto';
 
 @Injectable()
 export class ContractService {
   constructor(private readonly contractRepository: ContractRepository) {}
 
-  async findAll(): Promise<ContractEntity[]> {
-    return this.contractRepository.findAll();
+  async findAll(filters: ContractFilterDto): Promise<ContractEntity[]> {
+    return this.contractRepository.findAll(filters);
   }
 
   async findById(id: string): Promise<ContractEntity | null> {

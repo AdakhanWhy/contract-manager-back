@@ -4,9 +4,10 @@ import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DEFAULT_DB_CONNECTION } from 'src/common/constans';
 import { ContractEntity } from 'src/services/contract/entities/contract.entity';
 import { ContractMapper } from './mapper/contract.mapper';
-import { asc, eq } from 'drizzle-orm';
+import { asc, eq, like } from 'drizzle-orm';
 import { CreateContractDto } from 'src/services/contract/dto/create-contract.dto';
 import { UpdateContractDto } from 'src/services/contract/dto/update-contract.dto';
+import { ContractFilterDto } from 'src/services/contract/dto/contract-filter.dto';
 
 @Injectable()
 export class ContractRepository {
@@ -15,10 +16,15 @@ export class ContractRepository {
     private readonly db: PostgresJsDatabase<typeof schema>,
   ) {}
 
-  async findAll(): Promise<ContractEntity[]> {
+  async findAll(filters: ContractFilterDto): Promise<ContractEntity[]> {
     const data = await this.db
       .select()
       .from(schema.contract)
+      .where(
+        filters.name
+          ? like(schema.contract.title, `%${filters.name}%`)
+          : undefined,
+      )
       .orderBy(asc(schema.contract.createdAt));
 
     return data.map((item) => ContractMapper.toEntity(item));
