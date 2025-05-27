@@ -19,7 +19,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   const logger = new Logger('Adahan API');
   await app.listen(8000, () => {
-    logger.verbose(`App started at http://localhost:${8000}`);
+    logger.verbose(`App started at http://localhost:${8000}/api`);
   });
 }
 bootstrap();

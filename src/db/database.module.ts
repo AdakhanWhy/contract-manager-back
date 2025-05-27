@@ -8,6 +8,7 @@ import { databaseConfig } from 'src/common/config/database.config';
 import { DEFAULT_DB_CONNECTION } from 'src/common/constans';
 import { ContractRepository } from './repository/contract.repository';
 import { ContractTemplateRepository } from './repository/contract-template.repository';
+import { UserRepository } from './repository/user.repository';
 
 @Global()
 @Module({
@@ -26,7 +27,8 @@ import { ContractTemplateRepository } from './repository/contract-template.repos
     },
     ContractRepository,
     ContractTemplateRepository,
+    UserRepository,
   ],
-  exports: [ContractRepository, ContractTemplateRepository],
+  exports: [ContractRepository, ContractTemplateRepository, UserRepository],
 })
 export class DatabaseModule {}

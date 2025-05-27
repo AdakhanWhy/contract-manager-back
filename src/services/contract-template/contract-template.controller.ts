@@ -6,13 +6,17 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ContractTemplateService } from './contract-template.service';
 import { ContractTemplateEntity } from './entities/contract-template.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateContractTemplateDto } from './dto/create-contract-template.dto';
 import { UpdateContractTemplateDto } from './dto/update-contract-template.dto';
+import { JwtAuthGuard } from 'src/common/config/jwt-auth.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiTags('contract-template')
 @Controller('contract-template')
 export class ContractTemplateController {
