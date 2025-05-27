@@ -15,6 +15,8 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateContractDto } from './dto/create-contract.dto';
 import { UpdateContractDto } from './dto/update-contract.dto';
 import { JwtAuthGuard } from 'src/common/config/jwt-auth.guard';
+import { CurrentUser } from 'src/common/decorators/curren-user.decorator';
+import { JwtPayload } from 'src/common/interfaces/jwt-payload';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -24,8 +26,11 @@ export class ContractController {
   constructor(private readonly contractService: ContractService) {}
 
   @Post()
-  async createContract(@Body() data: CreateContractDto) {
-    return await this.contractService.create(data);
+  async createContract(
+    @CurrentUser() user: JwtPayload,
+    @Body() data: CreateContractDto,
+  ) {
+    return await this.contractService.create(data, user.userId);
   }
 
   @Get()
@@ -55,5 +60,10 @@ export class ContractController {
   @Delete(':id')
   async deleteContractById(@Param('id') id: string) {
     return await this.contractService.delete(id);
+  }
+
+  @Get('my-contracts')
+  async getUserByContractId(@CurrentUser() user: JwtPayload) {
+    return await this.contractService.findByUserId(user.userId);
   }
 }

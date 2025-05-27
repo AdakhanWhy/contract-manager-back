@@ -27,12 +27,14 @@ export class AccessTokenStrategy extends PassportStrategy(
       ignoreExpiration: false,
     });
   }
-  async validate(payload: any): Promise<JwtPayload> {
+
+  async validate(payload: unknown): Promise<JwtPayload> {
     try {
       const validatedPayload = JwtUserInputSchema.parse(payload);
-      return await JwtUserSchema.parseAsync(validatedPayload);
-    } catch (_) {
-      console.log('Invalid access token', _);
+      const parsedPayload = await JwtUserSchema.parseAsync(validatedPayload);
+      return JwtPayload.create(parsedPayload);
+    } catch (error) {
+      console.log('Invalid access token', error);
       throw new Error('Invalid access token');
     }
   }

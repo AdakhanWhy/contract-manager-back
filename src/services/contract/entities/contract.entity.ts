@@ -16,4 +16,6 @@ export class ContractEntity {
   endDate: Date;
   @ApiProperty()
   isSigned: boolean;
+  @ApiProperty()
+  userId: string;
 }

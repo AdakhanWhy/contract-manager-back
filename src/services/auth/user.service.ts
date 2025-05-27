@@ -51,6 +51,10 @@ export class UserService {
     return tokens;
   }
 
+  async getUserById(id: string): Promise<UserEntity | null> {
+    return this.userRepository.findById(id);
+  }
+
   profileEntityToJWTPayload(user: UserEntity): JwtPayloadInput {
     const payload: JwtPayloadInput = {
       userId: user.id,

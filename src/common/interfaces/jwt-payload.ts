@@ -1,3 +1,9 @@
+import { createZodDto } from 'src/utils/zod.dto';
+import {
+  JwtPayloadBaseSchema,
+  JwtUserSchema,
+} from '../validation/jwt-payload.schema';
+
 export interface JwtPayloadBaseSchema {
   iss?: string;
   sub?: string;
@@ -17,4 +23,4 @@ export type JwtPayloadInput = JwtUserInput;
 
 export type JwtUser = JwtPayloadBaseSchema & JwtUserInput;
 
-export type JwtPayload = JwtUser;
+export class JwtPayload extends createZodDto(JwtUserSchema) {}

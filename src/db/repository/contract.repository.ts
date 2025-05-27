@@ -45,9 +45,18 @@ export class ContractRepository {
     return ContractMapper.toEntity(data);
   }
 
-  async create(data: CreateContractDto): Promise<ContractEntity> {
+  async create(
+    data: CreateContractDto,
+    userId: string,
+  ): Promise<ContractEntity> {
     const result = (
-      await this.db.insert(schema.contract).values(data).returning()
+      await this.db
+        .insert(schema.contract)
+        .values({
+          ...data,
+          userId,
+        })
+        .returning()
     ).at(0);
 
     if (!result) {
@@ -74,5 +83,14 @@ export class ContractRepository {
 
   async delete(id: string): Promise<void> {
     await this.db.delete(schema.contract).where(eq(schema.contract.id, id));
+  }
+
+  async getContractsByUserId(userId: string): Promise<ContractEntity[]> {
+    const data = await this.db
+      .select()
+      .from(schema.contract)
+      .where(eq(schema.contract.userId, userId));
+
+    return data.map((item) => ContractMapper.toEntity(item));
   }
 }
