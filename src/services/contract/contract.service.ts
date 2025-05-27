@@ -4,10 +4,15 @@ import { ContractEntity } from './entities/contract.entity';
 import { CreateContractDto } from './dto/create-contract.dto';
 import { UpdateContractDto } from './dto/update-contract.dto';
 import { ContractFilterDto } from './dto/contract-filter.dto';
+import { UserRepository } from 'src/db/repository/user.repository';
+import { UserEntity } from '../auth/entities/user.entity';
 
 @Injectable()
 export class ContractService {
-  constructor(private readonly contractRepository: ContractRepository) {}
+  constructor(
+    private readonly contractRepository: ContractRepository,
+    private readonly userRepository: UserRepository,
+  ) {}
 
   async findAll(filters: ContractFilterDto): Promise<ContractEntity[]> {
     return this.contractRepository.findAll(filters);
@@ -32,7 +37,7 @@ export class ContractService {
     return this.contractRepository.delete(id);
   }
 
-  async findByUserId(userId: string): Promise<ContractEntity[]> {
-    return this.contractRepository.getContractsByUserId(userId);
+  async findByUserId(userId: string): Promise<UserEntity | null> {
+    return this.userRepository.findById(userId);
   }
 }

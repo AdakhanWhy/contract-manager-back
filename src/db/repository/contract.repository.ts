@@ -4,7 +4,7 @@ import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DEFAULT_DB_CONNECTION } from 'src/common/constans';
 import { ContractEntity } from 'src/services/contract/entities/contract.entity';
 import { ContractMapper } from './mapper/contract.mapper';
-import { asc, eq, like } from 'drizzle-orm';
+import { and, asc, eq, like } from 'drizzle-orm';
 import { CreateContractDto } from 'src/services/contract/dto/create-contract.dto';
 import { UpdateContractDto } from 'src/services/contract/dto/update-contract.dto';
 import { ContractFilterDto } from 'src/services/contract/dto/contract-filter.dto';
@@ -21,9 +21,14 @@ export class ContractRepository {
       .select()
       .from(schema.contract)
       .where(
-        filters.name
-          ? like(schema.contract.title, `%${filters.name}%`)
-          : undefined,
+        and(
+          filters.name
+            ? like(schema.contract.title, `%${filters.name}%`)
+            : undefined,
+          filters.userId
+            ? eq(schema.contract.userId, filters.userId)
+            : undefined,
+        ),
       )
       .orderBy(asc(schema.contract.createdAt));
 

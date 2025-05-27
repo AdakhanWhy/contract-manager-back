@@ -36,10 +36,17 @@ export class ContractController {
   @Get()
   async getAllContracts(
     @Query('name') name?: string,
+    @Query('userId') userId?: string,
   ): Promise<ContractEntity[]> {
     return await this.contractService.findAll({
       name,
+      userId,
     });
+  }
+
+  @Get('user-me')
+  async getUserMe(@CurrentUser() user: JwtPayload) {
+    return await this.contractService.findByUserId(user.userId);
   }
 
   @Get(':id')
@@ -60,10 +67,5 @@ export class ContractController {
   @Delete(':id')
   async deleteContractById(@Param('id') id: string) {
     return await this.contractService.delete(id);
-  }
-
-  @Get('my-contracts')
-  async getUserByContractId(@CurrentUser() user: JwtPayload) {
-    return await this.contractService.findByUserId(user.userId);
   }
 }
