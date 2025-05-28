@@ -11,10 +11,6 @@ export class ContractEntity {
   @ApiProperty()
   status: ContractStatus;
   @ApiProperty()
-  startDate: Date;
-  @ApiProperty()
-  endDate: Date;
-  @ApiProperty()
   isSigned: boolean;
   @ApiProperty()
   userId: string;

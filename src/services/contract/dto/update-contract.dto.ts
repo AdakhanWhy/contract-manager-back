@@ -9,9 +9,5 @@ export class UpdateContractDto {
   @ApiPropertyOptional()
   status?: ContractStatus;
   @ApiPropertyOptional()
-  startDate?: Date;
-  @ApiPropertyOptional()
-  endDate?: Date;
-  @ApiPropertyOptional()
   isSigned?: boolean;
 }

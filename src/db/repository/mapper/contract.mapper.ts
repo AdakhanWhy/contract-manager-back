@@ -8,8 +8,6 @@ export class ContractMapper {
       title: data.title,
       templateId: data.templateId,
       status: data.status,
-      startDate: data.startDate,
-      endDate: data.endDate,
       isSigned: data.isSigned,
       userId: data.userId,
     };
@@ -21,8 +19,6 @@ export class ContractMapper {
       title: data.title,
       templateId: data.templateId,
       status: data.status as ContractStatus,
-      startDate: data.startDate as Date,
-      endDate: data.endDate as Date,
       isSigned: data.isSigned ?? false,
       userId: data.userId,
     };

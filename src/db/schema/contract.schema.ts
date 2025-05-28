@@ -1,4 +1,4 @@
-import { boolean, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { boolean, varchar } from 'drizzle-orm/pg-core';
 import { createTable } from '../utils/createTable';
 import { defaultColumns } from '../utils/defaultColumns';
 import { contractStatusEnum } from './enums';
@@ -13,8 +13,6 @@ export const contract = createTable('contract', {
     .references(() => contractTemplate.id)
     .notNull(),
   status: contractStatusEnum('status').default('draft'),
-  startDate: timestamp('start_date'),
-  endDate: timestamp('end_date'),
   isSigned: boolean('is_signed').default(false),
   userId: foreignKeyColumn('user_id')
     .references(() => users.id)
